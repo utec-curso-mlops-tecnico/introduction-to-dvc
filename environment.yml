@@ -1,0 +1,14 @@
+name: dvc-azureml
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - pandas
+      - scikit-learn
+      - joblib
+      - pyyaml
+      - dvc[azure]
+      - azure-ai-ml
+      - mlflow

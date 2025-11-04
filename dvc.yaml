@@ -1,0 +1,25 @@
+stages:
+  prepare:
+    cmd: python src/data_prep.py --input data/in/application_data.csv --output data/processed/processed.csv
+    deps:
+      - src/data_prep.py
+      - data/in/application_data.csv
+    outs:
+      - data/processed/processed.csv
+  train:
+    cmd: python src/train.py --input data/processed/processed.csv --model outputs/model.joblib --params params.yaml
+    deps:
+      - src/train.py
+      - data/processed/processed.csv
+      - params.yaml
+    outs:
+      - outputs/model.joblib
+      - outputs/metrics.json
+  evaluate:
+    cmd: python src/evaluate.py --model outputs/model.joblib --data data/processed/processed.csv --out outputs/eval_report.json
+    deps:
+      - src/evaluate.py
+      - outputs/model.joblib
+      - data/processed/processed.csv
+    outs:
+      - outputs/eval_report.json

@@ -1,0 +1,5 @@
+# Ignorar archivos que no queremos trackear con DVC
+.vscode/
+__pycache__/
+outputs/
+.venv/

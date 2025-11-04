@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >
+  python src/train.py --input ${{inputs.app_data}}/application_data.csv --model outputs/model.joblib --params params.yaml
+inputs:
+  app_data:
+    data: azureml:application_data_dvc:1  # cambiar a nombre:version real (ver register_data.py salida)
+    mode: download
+environment:
+  conda: environment.yml
+code: .
+compute: jacobirios1
+experiment_name: dvc-azureml-experiment
+display_name: train-using-dataasset

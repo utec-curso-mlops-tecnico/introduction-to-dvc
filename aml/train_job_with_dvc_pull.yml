@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+# Este job ejecuta dvc pull dentro del job; requiere que el job tenga acceso al storage.
+command: >
+  bash -lc "pip install --no-cache-dir 'dvc[azure]' && \
+  echo 'DVC pulling dataset...' && \
+  dvc pull data/in/application_data.csv && \
+  python src/data_prep.py --input data/in/application_data.csv --output data/processed/processed.csv && \
+  python src/train.py --input data/processed/processed.csv --model outputs/model.joblib --params params.yaml"
+environment:
+  conda: environment.yml
+code: .
+compute: jacobirios1
+experiment_name: dvc-azureml-experiment
+display_name: train-with-dvc-pull
+# Nota: al enviar el job con az ml job create, pasar la variable de entorno AZURE_STORAGE_CONNECTION_STRING o usar Managed Identity
+# Ejemplo CLI:
+# az ml job create --file aml/train_job_with_dvc_pull.yml --set environment_variables.AZURE_STORAGE_CONNECTION_STRING="$AZ_CONN_STR"
